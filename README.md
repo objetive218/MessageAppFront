@@ -1,4 +1,7 @@
-# publicar mensajes con titulo, cuerpo corto con limite de caracteres
-# leer los mensajes que se publican, y que se puedan editar
-# Eliminar publicaciones
-# sistema de categorias 
+#### Simple messages app 
+
+
+# post messages with title, and short text with limit of characters
+# read messages and user can edit
+# delet messages
+# category system 
