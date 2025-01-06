@@ -1,18 +1,17 @@
+/* eslint-disable react/prop-types */
 import axios from "axios";
-import { useContext, useMemo, useRef, useState } from "react";
-import AllMessagesContext from "../../context/AllMessagesContext";
+import {  useState } from "react";
 
-const ChangeForm = ({infoMessage}) => {
-    const { content,setContent } = useContext(AllMessagesContext)
-    const [editedMessage, setEditedMessage] = useState({});
-    const actualMessage = useMemo((e) => {
-        return content.filter((e) => e !== infoMessage)
-    },[]) 
+
+const ChangeForm = ({infoMessage, setShowForm}) => {
+    const [editedMessage, setEditedMessage] = useState(infoMessage);
+
     const changeMessage = () => {
-        axios.put(`${import.meta.env.VITE_URL_POST}:${infoMessage._id}`,{
+        axios.put(`${import.meta.env.VITE_URL_POST}/${infoMessage._id}`,{
             user: editedMessage.user, title: editedMessage.title, text: editedMessage.text
         }).then((res) => {
-            setContent([actualMessage, res.data])
+            setShowForm(false)
+           console.log(res)
         })
     }
     const setValues = (e, name) => {
@@ -25,11 +24,11 @@ const ChangeForm = ({infoMessage}) => {
                 changeMessage();
             }}>
                 <label htmlFor="title">Title</label>
-                <input type="text" name="title" id="title" placeholder={infoMessage.title} value={infoMessage.title} onChange={(e) => setValues(e, "title")} />
+                <input type="text" name="title" id="title" placeholder={editedMessage.title} value={editedMessage.title} onChange={(e) => setValues(e, "title")} />
                 <label htmlFor="user">UserName</label>
-                <input type="text" name="user" id="user" placeholder={infoMessage.user} value={infoMessage.user} onChange={(e) => setValues(e, "user")} />
+                <input type="text" name="user" id="user" placeholder={editedMessage.user} value={editedMessage.user} onChange={(e) => setValues(e, "user")} />
                 <label htmlFor="user">Message</label>
-                <textarea name="mesagge" id="mesagges" placeholder={infoMessage.text} value={infoMessage.text} onChange={(e) => setValues(e, "text")}></textarea>
+                <textarea name="mesagge" id="mesagges" placeholder={editedMessage.text} value={editedMessage.text} onChange={(e) => setValues(e, "text")}></textarea>
                 <button type="submit">sent</button>
             </form>
         
