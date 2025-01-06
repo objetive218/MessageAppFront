@@ -2,9 +2,8 @@ import axios from "axios";
 import { useContext, useState } from "react";
 import AllMessagesContext from "../../context/AllMessagesContext";
 
-const NewMesagge = () => {
+const NewMesagge = ({ setShowFormNew }) => {
     const { content, setContent, selectMessage, setSelectMessage } = useContext(AllMessagesContext);
-    const [showForm, setShowForm] = useState(true);
     const [NewMesaggeForm, setNewMesaggeForm] = useState({ "user": "", "text": "", "title": "" })
     const setValues = (e, name) => {
         setNewMesaggeForm({ ...NewMesaggeForm, [name]: e.target.value })
@@ -12,10 +11,13 @@ const NewMesagge = () => {
     }
     const createMessage = () => {
         axios.post(import.meta.env.VITE_URL_POST, {
-            user: NewMesaggeForm.user,title: NewMesaggeForm.title, text: NewMesaggeForm.text
-        }).then((res) => { setContent([...content, res.data]) })
+            user: NewMesaggeForm.user, title: NewMesaggeForm.title, text: NewMesaggeForm.text
+        }).then((res) => {
+            setContent([...content, res.data])
+            setShowFormNew(false)
+        })
     }
-    
+
     return (
         (<div>
             {/*aqui se escriben los mensajes */}
@@ -30,9 +32,9 @@ const NewMesagge = () => {
                 <label htmlFor="user">Message</label>
                 <textarea name="mesagge" id="mesagges" placeholder="Add a comment..." value={NewMesaggeForm.text} onChange={(e) => setValues(e, "text")}></textarea>
                 <button type="submit">sent</button>
-                
+
             </form>
-        </div>) 
+        </div>)
     );
 }
 
