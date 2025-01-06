@@ -1,9 +1,11 @@
 import axios from "axios";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import AllMessagesContext from "../../context/AllMessagesContext";
+import ChangeForm from "./ChangeForm";
 
 const Messages = () => {
     const {content, setContent} = useContext(AllMessagesContext);
+    const [showForm, setShowForm] = useState(false);
     useEffect(() => {
         axios.get(`${import.meta.env.VITE_URL_DB}`).then((response) => setContent(response.data.messages)).catch(() => {
         })
@@ -14,8 +16,11 @@ const Messages = () => {
         <div>
             {content.map((e) => {
                 return (<>
-                    <h1 key={e._id}>{e.user}</h1>
+                    <h3 key={e._id}>{e.user}</h3>
+                    <h1>{e.title}</h1>
                     <p>{e.text}</p>
+                    {/*need only active the form of one message */}
+                    <button onClick={() => setShowForm(!showForm)}>Edit</button>
                 </>
                 )
             })}
